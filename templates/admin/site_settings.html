@@ -1,0 +1,141 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Site Settings | HealthyBites{% endblock %}
+
+{% block page_title %}Site Configuration{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success"
+    style="border-left: 4px solid #16a34a; background: #f0fdf4; color: #166534; padding: 1rem; border-radius: 0.5rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem; font-weight: 500;">
+    <i class="fa-solid fa-circle-check"></i>
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<form action="{{ url_for('admin_site_settings') }}" method="POST" enctype="multipart/form-data">
+    <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: start;">
+
+        <!-- Left Column: Content Settings -->
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+            <div class="card" style="padding: 2rem;">
+                <h3
+                    style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text-main); border-bottom: 1px solid #f5f5f4; padding-bottom: 1rem;">
+                    Hero Section Content</h3>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label class="form-label"
+                        style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; margin-bottom: 0.5rem; display: block;">Main
+                        Headline</label>
+                    <textarea name="hero_title" rows="2" class="form-control"
+                        style="font-family: var(--font-heading); font-weight: 600;"
+                        placeholder="e.g. Find Your Next Favorite Meal">{% if settings.hero_title %}{{ settings.hero_title }}{% endif %}</textarea>
+                    <p class="input-hint" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">HTML
+                        tags like &lt;br&gt; or &lt;span&gt; are supported.</p>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label class="form-label"
+                        style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; margin-bottom: 0.5rem; display: block;">Sub-headline</label>
+                    <textarea name="hero_subtitle" rows="3" class="form-control" style="line-height: 1.5;"
+                        placeholder="e.g. Explore thousands of healthy recipes...">{% if settings.hero_subtitle %}{{ settings.hero_subtitle }}{% endif %}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"
+                        style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; margin-bottom: 0.5rem; display: block;">Search
+                        Suggestions</label>
+                    <input type="text" name="hero_tags"
+                        value="{% if settings.hero_tags %}{{ settings.hero_tags }}{% endif %}" class="form-control"
+                        placeholder="chicken, pasta, keto, vegan">
+                    <p class="input-hint" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">
+                        Separate tags with commas. These appear as quick-links under the search bar.</p>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 2rem;">
+                <h3
+                    style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text-main); border-bottom: 1px solid #f5f5f4; padding-bottom: 1rem;">
+                    Visual Branding</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label"
+                            style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; margin-bottom: 0.5rem; display: block;">Primary
+                            Color</label>
+                        <div class="color-input-wrapper" style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="color" name="primary_color" value="{{ settings.primary_color or '#f97316' }}"
+                                class="color-picker"
+                                style="width: 44px; height: 44px; border-radius: 0.5rem; cursor: pointer;">
+                            <input type="text" value="{{ settings.primary_color or '#f97316' }}" readonly
+                                class="form-control" style="font-family: monospace; background: #fafaf9; flex: 1;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"
+                            style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; margin-bottom: 0.5rem; display: block;">Accent
+                            Color</label>
+                        <div class="color-input-wrapper" style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="color" name="secondary_color"
+                                value="{{ settings.secondary_color or '#fbbf24' }}" class="color-picker"
+                                style="width: 44px; height: 44px; border-radius: 0.5rem; cursor: pointer;">
+                            <input type="text" value="{{ settings.secondary_color or '#fbbf24' }}" readonly
+                                class="form-control" style="font-family: monospace; background: #fafaf9; flex: 1;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Media Settings -->
+        <div style="display: flex; flex-direction: column; gap: 2rem; position: sticky; top: 1.5rem;">
+            <div class="card" style="padding: 2rem;">
+                <h3
+                    style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text-main); border-bottom: 1px solid #f5f5f4; padding-bottom: 1rem;">
+                    Header Background</h3>
+
+                <div class="form-group">
+                    <label class="form-label"
+                        style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; margin-bottom: 0.5rem; display: block;">Upload
+                        New Image</label>
+                    <input type="file" name="hero_image" class="form-control"
+                        style="padding: 0.5rem; font-size: 0.8rem;">
+
+                    {% if settings.hero_image %}
+                    <div style="margin-top: 1.5rem;">
+                        <p class="input-hint"
+                            style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.75rem;">
+                            Current Background</p>
+                        <div
+                            style="position: relative; border-radius: 0.75rem; overflow: hidden; border: 1px solid #e7e5e4;">
+                            <img src="{{ url_for('static', filename=settings.hero_image) }}"
+                                style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                            <div
+                                style="position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.4)); pointer-events: none;">
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <button type="submit" class="btn-primary"
+                    style="width: 100%; padding: 1rem; border-radius: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.75rem; background: var(--primary); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    Publish Changes
+                </button>
+                <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); padding: 0 1rem;">Changes
+                    will be applied globally to the public site immediately.</p>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+{% endblock %}

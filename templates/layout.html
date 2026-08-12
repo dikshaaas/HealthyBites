@@ -1,0 +1,13 @@
+{# layout.html - Alias / Legacy base layout (redirects to base.html pattern) #}
+{# CSS: static/css/styles.css (via base.html) #}
+{# JS: static/js/main.js (via base.html) #}
+{# NOTE: All pages should extend base.html. This file is kept for compatibility. #}
+{% extends "base.html" %}
+
+{% block title %}{% block page_title %}HealthyBites{% endblock %}{% endblock %}
+
+{% block styles %}{% block extra_styles %}{% endblock %}{% endblock %}
+
+{% block content %}{% block main_content %}{% endblock %}{% endblock %}
+
+{% block scripts %}{% block extra_scripts %}{% endblock %}{% endblock %}

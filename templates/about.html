@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - HealthyBites{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 80px 0;">
+    <div class="text-center" style="max-width: 800px; margin: 0 auto 60px;">
+        <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 20px;">Why Choose <span style="color: var(--primary);">HealthyBites?</span></h1>
+        <p style="font-size: 1.2rem; color: var(--gray); line-height: 1.6;">
+            We believe that great cooking starts with what you already have. HealthyBites is designed to eliminate food waste and kitchen stress through an intelligent, multi-layered recipe discovery engine.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 80px;">
+        {# Logic 1: Strict Match #}
+        <div class="card" style="padding: 40px; border-radius: 20px; border: 1px solid var(--border); transition: transform 0.3s ease;">
+            <div style="width: 50px; height: 50px; background: #ecfdf5; color: #10b981; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 24px;">
+                <i class="fas fa-bullseye"></i>
+            </div>
+            <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px;">Strict Matching</h3>
+            <p style="color: var(--gray); line-height: 1.6;">
+                Our engine first looks for recipes in our curated database that you can make with <strong>exactly</strong> what you have. No extra trips to the grocery store required.
+            </p>
+        </div>
+
+        {# Logic 2: Partial Match #}
+        <div class="card" style="padding: 40px; border-radius: 20px; border: 1px solid var(--border); transition: transform 0.3s ease;">
+            <div style="width: 50px; height: 50px; background: #eff6ff; color: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 24px;">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px;">Partial Discovery</h3>
+            <p style="color: var(--gray); line-height: 1.6;">
+                Missing one or two items? We'll suggest recipes where you have the majority of ingredients and highlight exactly what's missing, helping you stay creative.
+            </p>
+        </div>
+
+        {# Logic 3: AI Fallback #}
+        <div class="card" style="padding: 40px; border-radius: 20px; border: 1px solid var(--border); transition: transform 0.3s ease;">
+            <div style="width: 50px; height: 50px; background: #fff7ed; color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 24px;">
+                <i class="fas fa-wand-magic-sparkles"></i>
+            </div>
+            <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px;">AI Generation</h3>
+            <p style="color: var(--gray); line-height: 1.6;">
+                When the database falls short, our AI engine kicks in. It generates unique recipes tailored specifically to your available ingredients using advanced modeling.
+            </p>
+        </div>
+    </div>
+
+    <div style="background: #fff7ed; padding: 60px; border-radius: 32px; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; border: 1px solid #fed7aa;">
+        <div style="flex: 1; min-width: 300px;">
+            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 20px; color: #7c2d12;">Healthier Alternatives</h2>
+            <p style="font-size: 1.1rem; color: #9a3412; line-height: 1.7;">
+                We don't just find recipes; we optimize them. For every search, our system cross-references your ingredients to suggest <strong>healthier alternatives</strong>—reducing calories, sugars, or fats without compromising on taste.
+            </p>
+            <div style="margin-top: 30px;">
+                <a href="/search" class="btn btn-primary">Start Cooking Now</a>
+            </div>
+        </div>
+        <div style="flex: 1; min-width: 300px; display: flex; justify-content: center;">
+            <div style="font-size: 8rem; color: var(--primary);">
+                <i class="fas fa-leaf"></i>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

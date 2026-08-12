@@ -1,0 +1,66 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Manage Recipes | HealthyBites{% endblock %}
+
+{% block page_title %}Recipe Management{% endblock %}
+
+{% block header_actions %}
+<a href="{{ url_for('add_recipe') }}" class="btn-primary">
+    <i class="fa-solid fa-plus"></i>
+    Add New Recipe
+</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Recipe Name</th>
+                <th style="text-align: center;">Calories</th>
+                <th style="text-align: center;">Duration</th>
+                <th style="text-align: right;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in recipes %}
+            <tr>
+                <td>
+                    <div style="font-weight: 600; color: var(--text-main);">{{ r.name }}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">ID: #{{ r.id }}</div>
+                </td>
+                <td style="text-align: center;">
+                    <span style="background: #f1f5f9; color: var(--text-main); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.875rem;">
+                        {{ r.calories }} kcal
+                    </span>
+                </td>
+                <td style="text-align: center;">
+                    <span style="color: var(--text-muted); font-size: 0.875rem;">
+                        <i class="fa-regular fa-clock" style="margin-right: 0.25rem;"></i>
+                        {{ r.minutes }} min
+                    </span>
+                </td>
+                <td>
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                        <a href="{{ url_for('edit_recipe', recipe_id=r.id) }}" 
+                           style="background: #fef3c7; color: #92400e; padding: 0.4rem 0.75rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem;">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            Edit
+                        </a>
+
+                        <a href="{{ url_for('delete_recipe', recipe_id=r.id) }}" 
+                           style="background: #fee2e2; color: #991b1b; padding: 0.4rem 0.75rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem;"
+                           onclick="return confirm('Delete this recipe?');">
+                            <i class="fa-solid fa-trash"></i>
+                            Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

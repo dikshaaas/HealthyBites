@@ -1,0 +1,148 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Admin Dashboard | HealthyBites{% endblock %}
+
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+
+<div class="card-grid">
+    <div class="card">
+        <div class="card-icon">
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <h3>{{ total_users }}</h3>
+        <p>Total Users</p>
+    </div>
+
+    <div class="card">
+        <div class="card-icon">
+            <i class="fa-solid fa-utensils"></i>
+        </div>
+        <h3>{{ total_recipes }}</h3>
+        <p>Total Recipes</p>
+    </div>
+
+    <div class="card">
+        <div class="card-icon">
+            <i class="fa-solid fa-bookmark"></i>
+        </div>
+        <h3>{{ total_saved }}</h3>
+        <p>Total Saved Recipes</p>
+    </div>
+</div>
+
+<!-- CHARTS SECTION -->
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:2rem; margin-top: 1rem;">
+
+    <div class="card" style="min-height: 400px; display: flex; flex-direction: column;">
+        <h4 style="margin-bottom:1.5rem; font-weight: 600; color: var(--text-muted); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">
+            <i class="fa-solid fa-chart-column" style="margin-right: 0.5rem;"></i> Saved Recipes per User
+        </h4>
+        <div style="flex: 1; position: relative;">
+            <canvas id="userChart"></canvas>
+        </div>
+    </div>
+
+    <div class="card" style="min-height: 400px; display: flex; flex-direction: column;">
+        <h4 style="margin-bottom:1.5rem; font-weight: 600; color: var(--text-muted); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">
+            <i class="fa-solid fa-chart-pie" style="margin-right: 0.5rem;"></i> User Role Distribution
+        </h4>
+        <div style="flex: 1; position: relative; padding: 1rem;">
+            <canvas id="roleChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Shared Chart.js Defaults for Academic Look
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.plugins.tooltip.backgroundColor = '#0f172a';
+        Chart.defaults.plugins.tooltip.padding = 12;
+        Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+        const chartLabels = {{ chart_labels | tojson }};
+        const chartData = {{ chart_data | tojson }};
+
+        const ctx = document.getElementById('userChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Saved Recipes',
+                        data: chartData,
+                        backgroundColor: '#f97316', // Branding Orange
+                        hoverBackgroundColor: '#ea580c',
+                        borderRadius: 6,
+                        barThickness: 32
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f3f4f6' },
+                            title: {
+                                display: true,
+                                text: 'Number of Recipes',
+                                font: { size: 11, weight: '700' }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            title: {
+                                display: true,
+                                text: 'Usernames',
+                                font: { size: 11, weight: '700' }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        const roleCtx = document.getElementById('roleChart');
+        if (roleCtx) {
+            new Chart(roleCtx, {
+                type: 'pie', 
+                data: {
+                    labels: ['Administrators', 'Regular Users'],
+                    datasets: [{
+                        data: [{{ admin_count }}, {{ user_count }}],
+                        backgroundColor: ['#f97316', '#fbbf24'], // Orange and Amber
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 25,
+                                font: { size: 12, weight: '600' }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+    });
+</script>
+
+
+{% endblock %}

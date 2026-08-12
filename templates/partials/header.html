@@ -1,0 +1,57 @@
+{# partials/header.html - Site Navigation #}
+{# CSS: static/css/styles.css (linked from base.html) #}
+<header class="navbar">
+    <div class="navbar-inner">
+        {# ── Logo ── #}
+        <a href="/" class="site-logo nav-logo">
+            <div class="site-logo-icon">🌿</div>
+            <span class="site-logo-text">Healthy<span>Bites</span></span>
+        </a>
+
+        {# ── Nav Links ── #}
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/search">Find Recipes</a></li>
+            {% if session.user_id %}
+            <li><a href="/dashboard">Dashboard</a></li>
+            {% endif %}
+        </ul>
+
+        {# ── Actions ── #}
+        <div class="nav-actions">
+            {% if session.user_id %}
+            <div class="dropdown">
+                <button class="profile-btn">
+                    <div class="nav-avatar-mini">
+                        {% if current_user and current_user.profile_image %}
+                        <img src="{{ url_for('static', filename=current_user.profile_image) }}" alt="Avatar">
+                        {% elif session.username %}
+                        {{ session.username[0]|upper }}
+                        {% else %}
+                        👤
+                        {% endif %}
+                    </div>
+                    <span class="profile-name">{{ session.username }}</span>
+                    <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--gray);"></i>
+                </button>
+                <div class="dropdown-content">
+                    <div class="dropdown-inner">
+                        <a href="/dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
+                        <a href="/search"><i class="fas fa-search"></i> Find Recipes</a>
+                        <a href="/profile"><i class="fas fa-user-cog"></i> Profile Settings</a>
+                        {% if session.role == 'admin' %}
+                        <div class="dropdown-divider"></div>
+                        <a href="/admin"><i class="fas fa-user-shield"></i> Admin Panel</a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a href="/logout" style="color: var(--red);"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <a href="/login" class="nav-link-plain">Log In</a>
+            <a href="/register" class="btn btn-primary" style="padding: 10px 24px; border-radius: 99px;">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+</header>

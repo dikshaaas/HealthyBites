@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Healthier Alternative - {{ main.name }}{% endblock %}
+
+{% block content %}
+<div class="recipe-detail-wrapper">
+
+    <a href="{{ url_for('recipe_detail', recipe_name=base_recipe_name) }}" class="back-link">← Back to Main Recipe</a>
+
+    <div class="recipe-detail-card interactive-recipe">
+        <h1>🥗 {{ main.name }}</h1>
+        <p class="alternative-label">🌿 Healthier alternative</p>
+
+        <div class="meta-row">
+            <span class="meta-chip meta-chip--cal">🔥 {{ main.calories }} cal</span>
+            <span class="meta-chip meta-chip--time">⏱ {{ main.minutes }} mins</span>
+        </div>
+
+        <div class="interactive-progress-block">
+            <h3>1) Gather Ingredients</h3>
+            <p class="interactive-subtext">
+                Check ingredients as you collect them. Once done, cooking steps will unlock.
+            </p>
+            <p class="interactive-progress-text ingredient-progress-text">0 / {{ (main.core_ingredients|length) + (main.pantry_ingredients|length) }} selected</p>
+
+            <div class="ingredient-section">
+                {% if main.core_ingredients %}
+                <div class="ingredient-group">
+                    <div class="group-label">Core</div>
+                    <div class="ingredient-flex">
+                        {% for ing in main.core_ingredients %}
+                        <div class="chip-row">
+                            <input type="checkbox" class="ingredient-checkbox" id="alt-core-{{ loop.index }}" data-role="ingredient">
+                            <label class="ingredient-chip" for="alt-core-{{ loop.index }}">
+                                <span class="chip-check"></span>
+                                <span class="chip-text">{{ ing }}</span>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if main.pantry_ingredients %}
+                <div class="ingredient-group">
+                    <div class="group-label">Pantry</div>
+                    <div class="ingredient-flex">
+                        {% for ing in main.pantry_ingredients %}
+                        <div class="chip-row">
+                            <input type="checkbox" class="ingredient-checkbox" id="alt-pantry-{{ loop.index }}" data-role="ingredient">
+                            <label class="ingredient-chip pantry" for="alt-pantry-{{ loop.index }}">
+                                <span class="chip-check"></span>
+                                <span class="chip-text">{{ ing }}</span>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="interactive-steps-wrap is-locked" id="interactiveStepsWrap">
+            <h3>2) Cook Step by Step</h3>
+            <p class="interactive-subtext">Click each step when completed to move forward.</p>
+            <ol class="interactive-step-list">
+                {% for step in main.instructions %}
+                <li>
+                    <button type="button" class="interactive-step-btn" data-role="step">
+                        <span class="step-index">{{ loop.index }}</span>
+                        <span class="step-text">{{ step }}</span>
+                    </button>
+                </li>
+                {% endfor %}
+            </ol>
+            <div class="cooking-complete-banner" id="cookingCompleteBanner">
+                Happy cooking. Enjoy your meal.
+            </div>
+        </div>
+
+        <div class="recipe-detail-actions">
+            <form method="POST" action="/save_recipe">
+                <input type="hidden" name="recipe_name" value="{{ main.name }}">
+                <button type="submit" class="btn btn-primary">
+                    Save This Alternative
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

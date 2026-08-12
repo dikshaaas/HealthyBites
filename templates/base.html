@@ -1,0 +1,77 @@
+{# base.html - Base template for HealthyBites #}
+{# CSS: static/css/styles.css #}
+{# JS: static/js/main.js #}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HealthyBites{% endblock %}</title>
+
+    {# ── Centralized Stylesheet: static/css/styles.css ── #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ai_generation.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    {# ── Dynamic Google Fonts from Admin Settings ── #}
+    {% set body_font = settings.font_body if settings and settings.font_body else 'Inter' %}
+    {% set heading_font = settings.font_heading if settings and settings.font_heading else 'Plus Jakarta Sans' %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ body_font | replace(' ', '+') }}:wght@300;400;500;600;700;800&family={{ heading_font | replace(' ', '+') }}:wght@400;600;700;800&display=swap">
+
+    {% if settings %}
+    <style>
+        :root {
+            --primary:       {{ settings.primary_color or '#f97316' }};
+            --amber:         {{ settings.secondary_color or '#fbbf24' }};
+            --primary-dark:  {{ settings.primary_color or '#f97316' }};
+            --primary-light: {{ settings.primary_color or '#f97316' }}1a;
+            --dark:          {{ settings.font_color or '#1c1917' }};
+            --font-body:     '{{ body_font }}', 'Segoe UI', sans-serif;
+            --font-heading:  '{{ heading_font }}', 'Segoe UI', sans-serif;
+            --font:          var(--font-body);
+        }
+        body { color: {{ settings.font_color or '#1c1917' }}; }
+        .footer {
+            background: {{ settings.footer_bg or '#fdfaf3' }} !important;
+            border-top-color: #f1f5f9 !important;
+        }
+        .btn-primary:hover  { filter: brightness(0.85); }
+        .btn-secondary:hover { background: {{ settings.primary_color or '#f97316' }}22; }
+    </style>
+    {% endif %}
+
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+
+    {# ── Navigation Header (partials/header.html) ── #}
+    {% include "partials/header.html" %}
+
+    <main>
+        {# ── Flash Messages ── #}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash-container">
+            {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {# ── Page Content ── #}
+        {% block content %}{% endblock %}
+    </main>
+
+    {# ── Footer (partials/footer.html) ── #}
+    {% include "partials/footer.html" %}
+
+    {# ── Centralized JS: static/js/main.js ── #}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

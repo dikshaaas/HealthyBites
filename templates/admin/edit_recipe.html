@@ -1,0 +1,61 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Edit Recipe | {{ recipe.name }}{% endblock %}
+
+{% block page_title %}Edit Recipe{% endblock %}
+
+{% block header_actions %}
+<a class="btn-primary" href="{{ url_for('admin_recipes') }}" style="background: #f1f5f9; color: var(--text-main); border: 1px solid #e2e8f0;">
+    <i class="fa-solid fa-arrow-left"></i>
+    Back to Recipes
+</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="card" style="max-width: 800px;">
+    <form method="POST">
+        <div class="form-group">
+            <label class="form-label">Recipe Name</label>
+            <input type="text" name="name" value="{{ recipe.name }}" class="form-control" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+                <label class="form-label">Calories (kcal)</label>
+                <input type="number" name="calories" value="{{ recipe.calories }}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Cooking Time (minutes)</label>
+                <input type="number" name="minutes" value="{{ recipe.minutes }}" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Core Ingredients</label>
+            <textarea name="core" class="form-control" rows="2">{{ recipe.core_ingredients }}</textarea>
+            <p class="input-hint">Comma separated list of main ingredients.</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Pantry Ingredients</label>
+            <textarea name="pantry" class="form-control" rows="2">{{ recipe.pantry_ingredients }}</textarea>
+            <p class="input-hint">Comma separated list of common pantry items.</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Cooking Instructions</label>
+            <textarea name="instructions" class="form-control" rows="10">{{ recipe.instructions }}</textarea>
+            <p class="input-hint">Enter each step on a new line.</p>
+        </div>
+
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #f1f5f9;">
+            <button type="submit" class="btn-primary" style="padding: 0.75rem 2rem; background: #f59e0b;">
+                <i class="fa-solid fa-rotate"></i>
+                Update Recipe
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

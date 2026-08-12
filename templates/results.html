@@ -1,0 +1,81 @@
+{# results.html - Recipe Search Results Page #}
+{# CSS: static/css/styles.css (via base.html) #}
+{# JS: static/js/main.js (via base.html) — toggleHealthy() is in main.js #}
+{% extends "base.html" %}
+
+{% block title %}Results - HealthyBites{% endblock %}
+
+{% block content %}
+<div class="results-wrapper">
+
+    <a href="/search" class="back-link">← Back to Search</a>
+
+    <div class="results-header">
+        <h2>{{ match_type }}</h2>
+        <p>{{ message }}</p>
+    </div>
+
+    {# Warnings #}
+    {% if warnings %}
+    <div class="warning-box">
+        <strong>⚠ Heads up:</strong>
+        <ul>
+            {% for w in warnings %}
+            <li>{{ w }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {# Main Recipe #}
+    {% if main %}
+    <div class="result-recipe-card">
+        <h3>{{ main.name }}</h3>
+
+        <div class="result-meta">
+            <span>🔥 <strong>{{ main.calories }}</strong> cal</span>
+            <span>⏱ <strong>{{ main.minutes }} minutes</strong></span>
+        </div>
+
+        <p><strong>Core Ingredients:</strong> {{ main.core_ingredients }}</p>
+        <p style="margin-top:6px;"><strong>Pantry Ingredients:</strong> {{ main.pantry_ingredients }}</p>
+
+        <div class="instructions-block" style="margin-top:16px;">
+            <strong>Instructions:</strong><br>
+            {{ main.instructions }}
+        </div>
+
+        <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;">
+            <form method="POST" action="/save_recipe" style="display:inline;">
+                <input type="hidden" name="recipe_name" value="{{ main.name }}">
+                <button type="submit" class="btn btn-primary">❤️ Save Recipe</button>
+            </form>
+
+            {% if healthy %}
+            <button id="healthyToggleBtn" class="healthy-toggle-btn" onclick="toggleHealthy()">
+                🍏 Show Healthier Alternative
+            </button>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    {# Healthy alternative — toggled via main.js toggleHealthy() #}
+    {% if healthy %}
+    <div id="healthySection" class="healthy-section">
+        <h3>🥗 Healthy Alternative: {{ healthy.name }}</h3>
+        <div class="result-meta">
+            <span>🔥 <strong>{{ healthy.calories }}</strong> cal</span>
+            <span>⏱ <strong>{{ healthy.minutes }}</strong> min</span>
+        </div>
+        <p><strong>Core Ingredients:</strong> {{ healthy.core_ingredients }}</p>
+        <p style="margin-top:6px;"><strong>Pantry Ingredients:</strong> {{ healthy.pantry_ingredients }}</p>
+        <div class="instructions-block" style="margin-top:14px;">
+            <strong>Instructions:</strong><br>
+            {{ healthy.instructions }}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

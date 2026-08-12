@@ -1,0 +1,76 @@
+{# login.html - User Login Page #}
+{# CSS: static/css/styles.css (via base.html) #}
+{# JS: static/js/main.js (via base.html) — validateLoginForm() defined inline below #}
+{% extends "base.html" %}
+
+{% block title %}Log In - HealthyBites{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            <div class="site-logo">
+                <div class="site-logo-icon">🌿</div>
+                <span class="site-logo-text">Healthy<span>Bites</span></span>
+            </div>
+            <p>Welcome back! Log in to your account.</p>
+        </div>
+
+        <form name="loginForm" method="POST" onsubmit="return validateLoginForm()">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="e.g. john_doe">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Your password">
+            </div>
+
+            <button type="submit" class="form-submit">Log In</button>
+        </form>
+
+        <p class="auth-footer">
+            Don't have an account? <a href="/register">Register here</a>
+        </p>
+        <p class="auth-footer" style="margin-top:8px;">
+            <a href="/">← Back to Home</a>
+        </p>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{# JS for this file: static/js/main.js (shared) + inline validation below #}
+<script>
+    function validateLoginForm() {
+        const username = document.forms["loginForm"]["username"].value.trim();
+        const password = document.forms["loginForm"]["password"].value;
+
+        if (!username && !password) {
+            alert("Please enter both username and password.");
+            return false;
+        }
+        if (!username) {
+            alert("Please enter your username or email.");
+            return false;
+        }
+        if (!password) {
+            alert("Please enter your password.");
+            return false;
+        }
+
+        if (username.length < 3) {
+            alert("Username must be at least 3 characters long.");
+            return false;
+        }
+        if (password.length < 4) {
+            alert("Password must be at least 4 characters long.");
+            return false;
+        }
+        return true;
+    }
+</script>
+{% endblock %}

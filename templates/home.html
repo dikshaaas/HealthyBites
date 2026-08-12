@@ -1,0 +1,173 @@
+{# home.html - Home / Landing Page #}
+{# CSS: static/css/styles.css (via base.html) #}
+{# JS: static/js/main.js (via base.html) #}
+{% extends "base.html" %}
+
+{% block title %}HealthyBites - Cook with What You Have{% endblock %}
+
+{% block content %}
+
+{# ══ HERO ══ #}
+<section class="hero" 
+         style="{% if settings and settings.hero_image %}background-image: url('{{ url_for('static', filename=settings.hero_image) }}');{% endif %}">
+    <div class="hero-content">
+        <h1>
+            {{ (settings.hero_title if settings else 'Cook Great Meals with<br>What You Already Have') | safe }}
+        </h1>
+        <p>
+            {{ settings.hero_subtitle if settings else 'Tell us what\'s in your kitchen and we\'ll suggest recipes you can make right now — no shopping needed.' }}
+        </p>
+
+        {% if session.user_id %}
+        <form class="hero-search" action="/search" method="POST">
+            <input id="heroIngredientInput" type="text" name="ingredients" placeholder="e.g. chicken, garlic, tomato…"
+                autocomplete="off" required>
+            <select name="meal_type">
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Find Recipes ✦</button>
+        </form>
+        <div class="hero-tags">
+            {% if settings and settings.hero_tags %}
+              {% for tag in settings.hero_tags.split(',') %}
+                <span class="hero-tag" data-ingredient="{{ tag.strip() }}">{{ tag.strip() }}</span>
+              {% endfor %}
+            {% else %}
+                <span class="hero-tag" data-ingredient="Chicken">Chicken</span>
+                <span class="hero-tag" data-ingredient="Pasta">Pasta</span>
+                <span class="hero-tag" data-ingredient="Eggs">Eggs</span>
+                <span class="hero-tag" data-ingredient="Rice">Rice</span>
+            {% endif %}
+        </div>
+        {% else %}
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+            <a href="/register" class="btn btn-primary" style="padding:14px 36px;font-size:1rem;">Get Started Free</a>
+            <a href="/login" class="btn btn-outline" style="padding:14px 36px;font-size:1rem;">Log In</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{# ══ HOW IT WORKS ══ #}
+<section class="hiw-section">
+    <div class="container text-center">
+        <h2 class="section-title">How it Works</h2>
+        <p class="section-sub">Three simple steps to your next meal.</p>
+        <div class="hiw-grid">
+            <div class="hiw-card">
+                <div class="hiw-icon">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+                <h3>Enter Ingredients</h3>
+                <p>Type in anything you have — vegetables, meat, spices. The more the better!</p>
+            </div>
+            <div class="hiw-card">
+                <div class="hiw-icon">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <h3>Pick a Recipe</h3>
+                <p>We'll show you the best matching recipes based on what you typed in.</p>
+            </div>
+            <div class="hiw-card">
+                <div class="hiw-icon">
+                    <i class="fa-solid fa-fire-burner"></i>
+                </div>
+                <h3>Cook & Enjoy</h3>
+                <p>Follow the step-by-step guide and enjoy a freshly cooked meal at home.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ══ POPULAR RECIPES ══ #}
+<section class="popular-section">
+    <div class="container">
+        <div class="text-center" style="margin-bottom:40px;">
+            <h2 class="section-title">Popular Recipes</h2>
+            <p class="section-sub">Try some of our most loved dishes today.</p>
+        </div>
+        
+        <div class="popular-grid">
+            {% for r in popular_recipes[:4] %}
+            <div class="recipe-card-lite">
+                <h3>{{ r.name }}</h3>
+                <div class="meta-row">
+                    <span><i class="fa-solid fa-fire" style="color: #ef4444; margin-right: 4px;"></i> {{ r.calories }} kcal</span>
+                    <span><i class="fa-solid fa-clock" style="color: #78716c; margin-right: 4px;"></i> {{ r.minutes }} mins</span>
+                </div>
+                <a href="{{ url_for('recipe_detail', recipe_name=r.name) }}" class="btn-view">
+                    View Recipe <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem;"></i>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="find-more-container">
+            <a href="/search" class="btn btn-secondary" style="padding:12px 32px;">
+                Find More Recipes <i class="fa-solid fa-magnifying-glass" style="margin-left: 8px;"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+{# ══ FEATURES ══ #}
+<section class="features-section">
+    <div class="container">
+        <div style="margin-bottom:48px;">
+            <h2 class="section-title">Why HealthyBites?</h2>
+            <p class="section-sub">Simple, smart, and made for everyday home cooks.</p>
+        </div>
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <h3>Use What You Have</h3>
+                <p>No more wasted groceries. We suggest recipes based only on the ingredients you enter — nothing extra needed.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <h3>Healthier Options</h3>
+                <p>Every recipe comes with a healthier alternative suggestion so you can make smarter choices without giving up taste.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-bookmark"></i>
+                </div>
+                <h3>Save Your Favourites</h3>
+                <p>Found something you love? Save any recipe to your personal dashboard and come back to it anytime.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h3>Smart AI Fallback</h3>
+                <p>Can't find a match in our database? Our smart engine generates a custom recipe just for you on the fly.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{# ══ CTA ══ #}
+{% if not session.user_id %}
+<section class="cta-section">
+    <div class="container text-center">
+        <h2>Ready to Start Cooking?</h2>
+        <p>Create a free account and find your next favourite meal.</p>
+        <a href="/register" class="btn btn-amber" style="padding:14px 36px;font-size:1rem;margin-top:24px;">
+            Create Free Account →
+        </a>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

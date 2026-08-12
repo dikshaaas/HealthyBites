@@ -1,0 +1,42 @@
+{# index.html - Alternative entry / Find Recipe Page #}
+{# CSS: static/css/styles.css (via base.html) #}
+{# JS: static/js/main.js (via base.html) #}
+{% extends "base.html" %}
+
+{% block title %}Search Recipes - HealthyBites{% endblock %}
+
+{% block content %}
+<div class="search-wrapper">
+    <div class="search-card">
+        <h2>Find Your Recipe</h2>
+        <p class="subtitle">Enter your available ingredients and let us suggest the best matching dishes.</p>
+
+        <form method="POST">
+            <div class="form-group">
+                <label>Ingredients <span style="color:var(--gray);font-weight:400">(comma separated)</span></label>
+                <input type="text" name="ingredients" placeholder="e.g. chicken, rice, garlic" required>
+            </div>
+
+            <div class="form-group">
+                <label>Meal Type</label>
+                <select name="meal_type">
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Allergies <span style="color:var(--gray);font-weight:400">(e.g. peanuts, dairy)</span></label>
+                <input type="text" name="allergies" placeholder="Exclude these ingredients...">
+            </div>
+
+            <div class="search-actions-row">
+                <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center;padding:13px;">
+                    🔍 Find Recipes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

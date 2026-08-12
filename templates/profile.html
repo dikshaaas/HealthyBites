@@ -1,0 +1,119 @@
+{# profile.html - Modern User Profile Settings Page #}
+{% extends "base.html" %}
+
+{% block title %}Settings - HealthyBites{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+
+    <div class="profile-top-bar">
+        <a href="/dashboard" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+        <h1 class="page-title">Account Settings</h1>
+    </div>
+
+    <div class="settings-layout">
+        {# ── Sidebar: Profile Avatar ── #}
+        <aside class="settings-sidebar">
+            <div class="avatar-management">
+                <div class="avatar-wrapper">
+                    {% if user.profile_image %}
+                    <img src="{{ url_for('static', filename=user.profile_image) }}" alt="Avatar" class="avatar-img">
+                    {% else %}
+                    <div class="avatar-img-placeholder">{{ user.username[0]|upper }}</div>
+                    {% endif %}
+                    
+                    <form method="POST" enctype="multipart/form-data" id="avatarForm">
+                        <input type="hidden" name="action" value="update_profile">
+                        <input type="hidden" name="username" value="{{ user.username }}">
+                        <input type="hidden" name="email" value="{{ user.email }}">
+                        <label for="profile_image" class="avatar-upload-btn" title="Upload new photo">
+                            <i class="fa-solid fa-camera"></i>
+                            <input type="file" id="profile_image" name="profile_image" style="display:none;" onchange="this.form.submit()">
+                        </label>
+                    </form>
+                </div>
+
+                <div class="avatar-actions">
+                    <p class="avatar-hint">Update your profile picture</p>
+                    {% if user.profile_image %}
+                    <form method="POST" style="margin-top: 12px;">
+                        <input type="hidden" name="action" value="update_profile">
+                        <input type="hidden" name="remove_image" value="true">
+                        <input type="hidden" name="username" value="{{ user.username }}">
+                        <input type="hidden" name="email" value="{{ user.email }}">
+                        <button type="submit" class="btn-text-danger" onclick="return confirm('Remove profile picture?')">
+                            Remove Photo
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-nav">
+                <div class="sidebar-nav-item active">General Information</div>
+                <div class="sidebar-nav-item">Account Security</div>
+            </div>
+        </aside>
+
+        {# ── Main Settings ── #}
+        <div class="settings-main">
+            
+            {# ── Personal Details ── #}
+            <div class="settings-card">
+                <div class="card-header">
+                    <h3>Personal Information</h3>
+                    <p>Update your display name and contact email.</p>
+                </div>
+                <form method="POST">
+                    <input type="hidden" name="action" value="update_profile">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" name="username" value="{{ user.username }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" name="email" value="{{ user.email }}" required>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            {# ── Security ── #}
+            <div class="settings-card">
+                <div class="card-header">
+                    <h3>Account Security</h3>
+                    <p>Change your password to keep your account secure.</p>
+                </div>
+                <form method="POST">
+                    <input type="hidden" name="action" value="change_password">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" name="current_password" placeholder="Verify your identity" required>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" name="new_password" placeholder="Min. 6 characters" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" name="confirm_password" placeholder="Repeat new password" required>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

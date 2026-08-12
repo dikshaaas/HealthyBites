@@ -1,0 +1,28 @@
+{# partials/footer.html - Site Footer #}
+{# CSS: static/css/styles.css (linked from base.html) #}
+<footer class="footer">
+    <div class="container footer-content">
+        <div class="site-logo">
+            <div class="site-logo-icon">🌿</div>
+            <span class="site-logo-text">Healthy<span>Bites</span></span>
+        </div>
+        
+        <p class="footer-mission">
+            Helping you reduce waste and enjoy creative meals with the ingredients you already have.
+        </p>
+
+        <ul class="footer-simple-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/search">Find Recipes</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/profile">My Profile</a></li>
+            <li><a href="{{ url_for('about') }}">About Us</a></li>
+        </ul>
+
+        <div class="footer-divider"></div>
+
+        <div class="footer-copyright">
+            <p>© 2026 HealthyBites. All rights reserved.</p>
+        </div>
+    </div>
+</footer>

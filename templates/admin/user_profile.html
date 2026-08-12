@@ -1,0 +1,159 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}User Profile | {{ profile_user.username }}{% endblock %}
+
+{% block page_title %}User Profile{% endblock %}
+
+{% block header_actions %}
+<a class="btn-primary" href="{{ url_for('admin_users') }}"
+    style="background: #f1f5f9; color: var(--text-main); border: 1px solid #e2e8f0;">
+    <i class="fa-solid fa-arrow-left"></i>
+    Back to Users
+</a>
+{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="profile-header">
+    {% if profile_user.profile_image %}
+    <img class="profile-avatar-large" src="{{ url_for('static', filename=profile_user.profile_image) }}" alt="">
+    {% else %}
+    <div class="profile-initials-large">{{ profile_user.username[0] | upper }}</div>
+    {% endif %}
+    <div>
+        <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);">{{ profile_user.username }}</div>
+        <div style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.5rem;">{{ profile_user.email }}
+        </div>
+        {% if profile_user.role == 'admin' %}
+        <span class="badge" style="background: #fef3c7; color: #92400e;">Admin</span>
+        {% else %}
+        <span class="badge" style="background: #dcfce7; color: #166534;">User</span>
+        {% endif %}
+    </div>
+
+    <div class="stat-group">
+        <div class="stat-item">
+            <span class="stat-value">{{ liked | length }}</span>
+            <span class="stat-label">Liked</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">{{ popular | length }}</span>
+            <span class="stat-label">Searched</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">{{ ai_recipes | length }}</span>
+            <span class="stat-label">AI Recipes</span>
+        </div>
+    </div>
+</div>
+
+<div style="margin-bottom: 2rem;">
+    <!-- Most Searched -->
+    <div class="section-card">
+        <div class="section-header">
+            <h3><i class="fa-solid fa-fire" style="color: #f97316; margin-right: 0.5rem;"></i> Popular Recipes (Most
+                Viewed)</h3>
+        </div>
+        {% if popular %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+            {% for r in popular %}
+            <div
+                style="padding: 1rem; background: #f8fafc; border-radius: 0.75rem; border: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; transition: var(--transition);">
+                <div>
+                    <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.25rem;">
+                        {{ r.recipe_name }}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">
+                        {% if r.calories %}{{ r.calories }} kcal{% endif %}
+                        {% if r.minutes %} · {{ r.minutes }} min{% endif %}
+                    </div>
+                </div>
+                <div
+                    style="background: #fff7ed; color: #f97316; font-size: 0.75rem; font-weight: 800; padding: 0.4rem 0.75rem; border-radius: 0.5rem; border: 1px solid #ffedd5;">
+                    {{ r.search_count }}× Views
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div
+            style="color: var(--text-muted); font-size: 0.875rem; text-align: center; padding: 3rem 0; background: #f8fafc; border-radius: 0.75rem;">
+            No search activity recorded for this user.</div>
+        {% endif %}
+    </div>
+</div>
+
+
+<!-- AI Generated Recipes -->
+<div class="section-card">
+    <div class="section-header">
+        <h3><i class="fa-solid fa-brain" style="color: #6366f1; margin-right: 0.5rem;"></i> AI Generated Recipes</h3>
+        <span class="badge" style="background: #f1f5f9; color: var(--text-muted);">{{ ai_recipes | length }}
+            Total</span>
+    </div>
+
+    {% if ai_recipes %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
+        {% for r in ai_recipes %}
+        <div style="background: white; border-radius: 1.25rem; border: 1px solid #f1f5f9; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.2s;">
+            <div style="margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <span style="background: {{ '#ede9fe' if r.source == 'magic' else '#f1f5f9' }}; color: {{ '#5b21b6' if r.source == 'magic' else '#475569' }}; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;">
+                        {{ 'Magic' if r.source == 'magic' else 'Fallback' }}
+                    </span>
+                    <span style="font-size: 0.75rem; color: #94a3b8;">{{ r.generated_at.strftime('%d %b %Y') if r.generated_at else '' }}</span>
+                </div>
+                <h4 style="font-size: 1.1rem; font-weight: 700; color: #111827; margin-bottom: 0.75rem;">{{ r.title }}</h4>
+                <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: #64748b;">
+                    <span><i class="fa-regular fa-clock"></i> {{ r.minutes }} min</span>
+                    {% if r.accuracy %}
+                    <span style="display: flex; align-items: center; gap: 4px;">
+                        <i class="fa-solid fa-circle" style="color: {{ r.accuracy.grade_color }}; font-size: 0.5rem;"></i>
+                        Grade {{ r.accuracy.grade }} ({{ r.accuracy.overall }}%)
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem;">
+                <a href="{{ url_for('admin_generated_detail', recipe_id=r.id) }}" 
+                   style="flex: 2; text-align: center; background: #f8fafc; color: #1e293b; text-decoration: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; border: 1px solid #e2e8f0;">
+                    View Analysis & Report
+                </a>
+                <a href="{{ url_for('delete_generated', recipe_id=r.id) }}" 
+                   onclick="return confirm('Delete this recipe from user\'s profile?')"
+                   style="flex: 1; text-align: center; background: #fef2f2; color: #ef4444; text-decoration: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem;">
+                    Delete
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="color: var(--text-muted); font-size: 0.875rem; text-align: center; padding: 3rem 0;">
+        <i class="fa-solid fa-ghost" style="font-size: 2rem; display: block; margin-bottom: 1rem; opacity: 0.2;"></i>
+        This user has not triggered any AI recipe generation yet.
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function toggleAI(id) {
+        const body = document.getElementById(id);
+        const header = document.getElementById('head-' + id);
+        const icon = document.getElementById('icon-' + id);
+
+        const isOpen = body.classList.contains('active');
+
+        body.classList.toggle('active', !isOpen);
+        header.classList.toggle('active', !isOpen);
+
+        if (!isOpen) {
+            icon.style.transform = 'rotate(180deg)';
+        } else {
+            icon.style.transform = 'rotate(0deg)';
+        }
+    }
+</script>
+
+{% endblock %}

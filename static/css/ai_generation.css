@@ -1,0 +1,203 @@
+/* ─── GENERATION UI ────────────────────────────────────────── */
+.search-actions-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.btn-magic {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+.btn-magic:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    opacity: 0.9;
+}
+
+.badge-ai {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: linear-gradient(135deg, #ede9fe 0%, #fae8ff 100%);
+    color: #6d28d9;
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid #ddd6fe;
+    margin-bottom: 20px;
+}
+
+.academic-box,
+.ai-logic-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #6366f1;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    font-style: italic;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    max-width: 800px;
+}
+
+.academic-box::before,
+.ai-logic-box::before {
+    content: "🎓 System Logic:";
+    display: block;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #6366f1;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.recipe-grid-card.is-ai {
+    border: 2px solid #ddd6fe !important;
+    background: linear-gradient(to bottom right, #ffffff, #faf9ff) !important;
+}
+
+/* ─── AI DETAIL PAGE: MAGIC CENTERED THEME ────────────────────────── */
+.ai-detail-wrapper {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ai-detail-card {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    width: 100%;
+    border: 1px solid #f1f5f9;
+    text-align: center;
+}
+
+.magic-hero-header {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.magic-hero-header h1 {
+    font-size: 2.5rem;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.magic-sub {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.ai-meta-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.ai-meta-item {
+    text-align: center;
+}
+
+.ai-meta-item strong {
+    display: block;
+    font-size: 1.4rem;
+    color: #334155;
+}
+
+.ai-meta-item span {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+/* Ingredients & Steps */
+.interactive-progress-block {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.ai-checklist-glow {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: left;
+    /* Keep the actual checks left-aligned for readability */
+}
+
+.ai-step-list {
+    max-width: 700px;
+    margin: 25px auto;
+    text-align: left;
+}
+
+.step-card-ai {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s;
+    cursor: pointer;
+    width: 100%;
+}
+
+.step-card-ai .index {
+    background: #6366f1;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+}
+
+/* Success Banner */
+#cookingCompleteBanner {
+    background: #10b981;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+    display: none;
+    text-align: center;
+}
+
+#cookingCompleteBanner.is-visible {
+    display: block !important;
+}
+
+.ai-save-btn {
+    margin-top: 20px;
+}

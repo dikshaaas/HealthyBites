@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel | HealthyBites{% endblock %}</title>
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Premium Admin Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_premium.css') }}">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <a href="{{ url_for('admin_dashboard') }}" class="site-logo sidebar-brand" style="margin-bottom: 1rem;">
+            <div class="site-logo-icon">🌿</div>
+            <span class="site-logo-text">Healthy<span>Bites</span></span>
+        </a>
+        <div style="padding: 0 0.5rem; margin-bottom: 2.5rem;">
+            <span
+                style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: #78716c; font-weight: 800; background: #292524; padding: 0.25rem 0.6rem; border-radius: 0.3rem; display: inline-block;">Admin
+                Panel</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('admin_dashboard') }}"
+                class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('admin_users') }}" class="{% if request.endpoint == 'admin_users' %}active{% endif %}">
+                <i class="fa-solid fa-user-graduate"></i>
+                <span>Manage Users</span>
+            </a>
+            <a href="{{ url_for('admin_recipes') }}"
+                class="{% if request.endpoint == 'admin_recipes' %}active{% endif %}">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Manage Recipes</span>
+            </a>
+            <a href="{{ url_for('admin_site_settings') }}"
+                class="{% if request.endpoint == 'admin_site_settings' %}active{% endif %}">
+                <i class="fa-solid fa-gears"></i>
+                <span>Site Settings</span>
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header class="header-section">
+            <h1 class="page-title">{% block page_title %}Dashboard{% endblock %}</h1>
+            <div class="header-actions">
+                {% block header_actions %}{% endblock %}
+            </div>
+        </header>
+
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+
+</html>

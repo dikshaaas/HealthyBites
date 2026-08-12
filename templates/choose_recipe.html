@@ -1,0 +1,107 @@
+{# choose_recipe.html - Recipe Selection Page #}
+{% extends "base.html" %}
+
+{% block title %}Choose a Recipe - HealthyBites{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 60px 0;">
+
+    <a href="/search" class="back-link" style="display:inline-block; margin-bottom: 20px; color: var(--gray); text-decoration: none; font-weight: 500;">
+        <i class="fas fa-arrow-left"></i> Back to Search
+    </a>
+
+    <div style="margin-bottom: 40px;">
+        <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 10px;">{{ match_type }}</h2>
+        <p style="color: var(--gray); font-size: 1.1rem;">{{ message }}</p>
+    </div>
+
+    {% if warnings %}
+    <div class="warning-box" style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 16px; padding: 20px; margin-bottom: 40px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; color:#c2410c;">
+            <i class="fas fa-circle-exclamation"></i>
+            <strong style="font-weight: 700;">Attention:</strong>
+        </div>
+        <ul style="margin: 0; padding-left: 20px; color: #9a3412;">
+            {% for w in warnings %}
+            <li>{{ w }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {# ── Matched Recipes ── #}
+    {% if recipes %}
+        <div class="recipe-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
+            {% for r in recipes %}
+            <div class="recipe-card-premium" style="background: #fff; border-radius: 20px; border: 1px solid #f1f5f9; padding: 30px; transition: all 0.2s ease; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                
+                {# Top Accent #}
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--primary), var(--amber));"></div>
+
+                <div style="flex-grow: 1;">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; line-height: 1.4; color: #111827;">{{ r.name }}</h3>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">
+                        <div style="display: flex; align-items: center; gap: 10px; color: #64748b; font-size: 0.95rem;">
+                            <i class="fas fa-fire" style="color: #f97316; width: 16px;"></i>
+                            <span><strong>{{ r.calories }}</strong> calories</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; color: #64748b; font-size: 0.95rem;">
+                            <i class="fas fa-clock" style="color: #3b82f6; width: 16px;"></i>
+                            <span><strong>{{ r.minutes }}</strong> mins cooking time</span>
+                        </div>
+                        {% if r.similarity_score is defined %}
+                        <div style="display: flex; align-items: center; gap: 10px; color: #64748b; font-size: 0.95rem;">
+                            <i class="fas fa-chart-line" style="color: #10b981; width: 16px;"></i>
+                            <span><strong>{{ (r.similarity_score * 100) | round(1) }}%</strong> similarity</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div style="margin-top: auto;">
+                    <a href="{{ url_for('recipe_detail', recipe_name=r.name, source='strict') }}" class="btn btn-primary"
+                        style="width: 100%; display: block; text-align: center; padding: 12px; font-weight: 700; border-radius: 12px;">
+                        View Details
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-results-box" style="text-align:center; padding: 80px 20px; background: #fff7ed; border-radius: 32px; border: 1px solid #fed7aa; margin-bottom: 30px;">
+            <div style="width: 80px; height: 80px; background: #ffedd5; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 30px;">
+                <i class="fas fa-magnifying-glass"></i>
+            </div>
+            <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 16px; color: #111827;">No Results Found</h3>
+            <p style="color: #64748b; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6; font-size: 1.1rem;">
+                We couldn't find any recipes in our database that match your ingredients. Use our AI engine to generate a custom recipe.
+            </p>
+            
+            <form action="{{ url_for('magic_generate') }}" method="POST">
+                <input type="hidden" name="ingredients" value="{{ session.get('search_ingredients', '') }}">
+                <button type="submit" class="btn btn-magic" style="padding: 18px 48px; font-size: 1.1rem; font-weight: 700; cursor: pointer; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);">
+                    <i class="fas fa-wand-magic-sparkles"></i> Generate AI Recipe
+                </button>
+            </form>
+        </div>
+    {% endif %}
+
+    {% if session.get("partial_recipes") %}
+    <div style="margin-top:50px; text-align:center; padding-top: 40px; border-top: 1px solid #f1f5f9;">
+        <p style="color: var(--gray); margin-bottom: 20px;">Or explore recipes that use most of your ingredients:</p>
+        <a href="{{ url_for('partial_results') }}" class="btn btn-secondary" style="padding:16px 40px; font-weight: 700; border-radius: 12px;">
+            View Partial Matches
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+<style>
+    .recipe-card-premium:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+</style>
+{% endblock %}

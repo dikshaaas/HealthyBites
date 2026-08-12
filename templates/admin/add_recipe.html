@@ -1,0 +1,63 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Add Recipe | HealthyBites{% endblock %}
+
+{% block page_title %}Add New Recipe{% endblock %}
+
+{% block header_actions %}
+<a class="btn-primary" href="{{ url_for('admin_recipes') }}" style="background: #f1f5f9; color: var(--text-main); border: 1px solid #e2e8f0;">
+    <i class="fa-solid fa-arrow-left"></i>
+    Back to Recipes
+</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="card" style="max-width: 800px;">
+    <form method="POST">
+        <div class="form-group">
+            <label class="form-label">Recipe Name</label>
+            <input type="text" name="name" class="form-control" placeholder="e.g. Quinoa Avocado Salad" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+                <label class="form-label">Calories (kcal)</label>
+                <input type="number" name="calories" class="form-control" placeholder="350" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Cooking Time (minutes)</label>
+                <input type="number" name="minutes" class="form-control" placeholder="25" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Core Ingredients</label>
+            <textarea name="core" class="form-control" rows="2" placeholder="quinoa, avocado, spinach, lemon"></textarea>
+            <p class="input-hint">Comma separated list of main ingredients.</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Pantry Ingredients</label>
+            <textarea name="pantry" class="form-control" rows="2" placeholder="olive oil, salt, pepper"></textarea>
+            <p class="input-hint">Comma separated list of common pantry items.</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Cooking Instructions</label>
+            <textarea name="instructions" class="form-control" rows="8" placeholder="1. Rinse quinoa...
+2. Boil water...
+3. Chop avocado..."></textarea>
+            <p class="input-hint">Enter each step on a new line.</p>
+        </div>
+
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #f1f5f9;">
+            <button type="submit" class="btn-primary" style="padding: 0.75rem 2rem;">
+                <i class="fa-solid fa-plus"></i>
+                Create Recipe
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

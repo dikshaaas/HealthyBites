@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Find Your Recipe - HealthyBites{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search_premium.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="search-premium-wrapper">
+    <div class="search-premium-card">
+        <h2>Find Your Next Meal</h2>
+        <p class="subtitle">Enter the ingredients you have on hand, and we'll craft the perfect culinary match for you.</p>
+
+        <form method="POST">
+            <!-- Ingredients with Suggestions -->
+            <div class="premium-form-group">
+                <label for="ingredientInput">Core Ingredients</label>
+                <input type="text" 
+                       id="ingredientInput" 
+                       name="ingredients" 
+                       class="premium-input" 
+                       placeholder="e.g. Chicken, Basil, Parmesan" 
+                       autocomplete="off"
+                       required>
+                <div id="suggestionBox" class="suggestions-container"></div>
+                <small style="color:var(--premium-text-muted); font-size: 0.8rem; margin-top: 8px; display: block;">
+                    Separate ingredients with commas. We'll suggest matches as you type.
+                </small>
+            </div>
+
+            <!-- Meal Type Custom Selector -->
+            <div class="premium-form-group">
+                <label>Meal Type</label>
+                <div class="meal-type-grid">
+                    <div class="meal-type-option">
+                        <input type="radio" name="meal_type" id="breakfast" value="breakfast" checked>
+                        <label for="breakfast" class="meal-type-label">Breakfast</label>
+                    </div>
+                    <div class="meal-type-option">
+                        <input type="radio" name="meal_type" id="lunch" value="lunch">
+                        <label for="lunch" class="meal-type-label">Lunch</label>
+                    </div>
+                    <div class="meal-type-option">
+                        <input type="radio" name="meal_type" id="dinner" value="dinner">
+                        <label for="dinner" class="meal-type-label">Dinner</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Allergy Field -->
+            <div class="premium-form-group">
+                <label>Allergies & Restrictions</label>
+                <input type="text" 
+                       name="allergies" 
+                       class="premium-input" 
+                       placeholder="e.g. Peanuts, Dairy, Gluten">
+                <small style="color:var(--premium-text-muted); font-size: 0.8rem; margin-top: 8px; display: block;">
+                    We will exclude these from your recommendations.
+                </small>
+            </div>
+
+            <button type="submit" class="btn-premium">
+                Discover Recipes
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/suggestions.js') }}"></script>
+{% endblock %}

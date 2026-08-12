@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}{{ main.name }} - HealthyBites{% endblock %}
+
+{% block content %}
+<div class="ai-detail-wrapper">
+
+    <a href="/choose_recipe" class="back-link">← Back to Results</a>
+
+    <div class="ai-detail-card interactive-recipe">
+        <div class="magic-hero-header">
+            <div class="badge-ai"><i class="fas fa-sparkles"></i> AI Recipe Generation</div>
+            <h1>{{ main.name }}</h1>
+            <p class="magic-sub">Generated for your ingredients</p>
+        </div>
+
+        <div class="ai-logic-box">
+            <p>{{ main.disclaimer }}</p>
+        </div>
+
+        <div class="ai-meta-grid">
+            <div class="ai-meta-item">
+                <strong><i class="fas fa-fire"></i> {{ main.calories }}</strong>
+                <span>Estimated Calories</span>
+            </div>
+            <div class="ai-meta-item">
+                <strong><i class="fas fa-clock"></i> {{ main.minutes }}</strong>
+                <span>Calculated Minutes</span>
+            </div>
+        </div>
+
+        <div class="interactive-progress-block">
+            <h3>Gather Ingredients</h3>
+            <p class="interactive-subtext">Collect the components below to unlock the cooking steps.</p>
+            <p class="interactive-progress-text ingredient-progress-text">
+                0 / {{ (main.core_ingredients|length) + (main.pantry_ingredients|length) }} Selected
+            </p>
+
+            <div class="ingredient-section">
+                {% if main.core_ingredients %}
+                <div class="ingredient-group">
+                    <div class="group-label">Core</div>
+                    <div class="ingredient-flex">
+                        {% for ing in main.core_ingredients %}
+                        <div class="chip-row">
+                            <input type="checkbox" class="ingredient-checkbox" id="ai-core-{{ loop.index }}"
+                                data-role="ingredient">
+                            <label class="ingredient-chip" for="ai-core-{{ loop.index }}">
+                                <span class="chip-check"></span>
+                                <span class="chip-text"><strong>{{ ing }}</strong></span>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if main.pantry_ingredients %}
+                <div class="ingredient-group">
+                    <div class="group-label">Pantry</div>
+                    <div class="ingredient-flex">
+                        {% for ing in main.pantry_ingredients %}
+                        <div class="chip-row">
+                            <input type="checkbox" class="ingredient-checkbox" id="ai-pantry-{{ loop.index }}"
+                                data-role="ingredient">
+                            <label class="ingredient-chip pantry" for="ai-pantry-{{ loop.index }}">
+                                <span class="chip-check"></span>
+                                <span class="chip-text pantry-text">{{ ing }}</span>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="interactive-steps-wrap is-locked" id="interactiveStepsWrap">
+            <h3>Cooking Instructions</h3>
+            <p class="interactive-subtext">Follow these steps carefully to prepare your meal.</p>
+
+            <div class="ai-step-list">
+                {% for step in main.instructions %}
+                <button type="button" class="interactive-step-btn step-card-ai" data-role="step">
+                    <div class="index">{{ loop.index }}</div>
+                    <div class="text">{{ step }}</div>
+                </button>
+                {% endfor %}
+            </div>
+
+            <div class="cooking-complete-banner" id="cookingCompleteBanner">
+                <h4 style="margin-bottom: 5px;">Recipe Complete!</h4>
+                <p style="margin: 0;">Enjoy your custom synthesized meal.</p>
+            </div>
+        </div>
+
+        <div class="recipe-detail-actions">
+            <form method="POST" action="/save_recipe">
+                <input type="hidden" name="recipe_name" value="{{ main.name }}">
+                <button type="submit" class="btn btn-primary">
+                    Save Recipe
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,139 @@
+{# dashboard.html - User Dashboard Page #}
+{# CSS: static/css/styles.css (via base.html) #}
+{# JS: static/js/main.js (via base.html) #}
+{% extends "base.html" %}
+
+{% block title %}My Dashboard - HealthyBites{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+
+    <div class="dashboard-header">
+        <div class="dashboard-welcome-group">
+            <h2 class="dashboard-welcome">
+                Welcome back, <span>{{ session.username }}</span>
+            </h2>
+            <p class="dashboard-welcome-sub">Your kitchen dashboard is ready.</p>
+        </div>
+    </div>
+
+    {# ── Navigation Cards ── #}
+    <div class="dashboard-nav-grid">
+        <div class="dash-nav-card active" onclick="showDashSection('saved')">
+            <div class="dash-nav-info">
+                <h3>Favourites</h3>
+                <p>{{ saved|length if saved else 0 }} recipes</p>
+            </div>
+        </div>
+        <div class="dash-nav-card" onclick="showDashSection('viewed')">
+            <div class="dash-nav-info">
+                <h3>Recently Viewed</h3>
+                <p>{{ viewed|length if viewed else 0 }} items</p>
+            </div>
+        </div>
+        <a href="/profile" class="dash-nav-card">
+            <div class="dash-nav-info">
+                <h3>Account Settings</h3>
+                <p>Profile & Preferences</p>
+            </div>
+        </a>
+    </div>
+
+    {# ── Content Sections ── #}
+    <div class="dashboard-content-area">
+        
+        {# ── Favourite Recipes ── #}
+        <div id="dash-section-saved" class="dash-section active">
+            <div class="dash-section-header">
+                <h3 class="dash-section-title">Favourite Recipes</h3>
+            </div>
+
+            {% if saved %}
+            <div class="dashboard-grid">
+                {% for r in saved %}
+                <div class="dash-recipe-card">
+                    <div class="dash-card-content">
+                        <a href="{{ url_for('recipe_detail', recipe_name=r.recipe_name) }}" class="dash-recipe-name">
+                            {{ r.recipe_name }}
+                        </a>
+                        <div class="dash-recipe-meta">
+                            {% if r.calories %}
+                            <span>{{ r.calories }} cal</span>
+                            {% endif %}
+                            {% if r.minutes %}
+                            <span>{{ r.minutes }}m</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="dash-card-actions">
+                        <a href="{{ url_for('recipe_detail', recipe_name=r.recipe_name) }}" class="btn-dash-action" title="View Recipe">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+                        <a href="{{ url_for('unsave_recipe', recipe_name=r.recipe_name) }}" class="btn-dash-action delete"
+                            onclick="return confirm('Remove from favourites?')" title="Remove">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="dash-empty-state">
+                <p class="dash-empty-title">No saved recipes yet</p>
+                <p class="dash-empty-sub">Explore recipes and save your favourites here.</p>
+                <a href="/search" class="btn btn-primary" style="margin-top:20px;">Find Recipes</a>
+            </div>
+            {% endif %}
+        </div>
+
+        {# ── Recently Viewed ── #}
+        <div id="dash-section-viewed" class="dash-section">
+            <div class="dash-section-header">
+                <h3 class="dash-section-title">Recently Viewed</h3>
+            </div>
+
+            {% if viewed %}
+            <div class="dashboard-grid compact">
+                {% for r in viewed %}
+                <a href="{{ url_for('recipe_detail', recipe_name=r.recipe_name) }}" class="dash-recipe-card compact">
+                    <div class="dash-card-content">
+                        <span class="dash-recipe-name">{{ r.recipe_name }}</span>
+                        <div class="dash-recipe-meta">
+                            {% if r.calories %}
+                            <span>{{ r.calories }} cal</span>
+                            {% endif %}
+                            {% if r.minutes %}
+                            <span>{{ r.minutes }} mins</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right dash-arrow"></i>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="dash-empty-state">
+                <p class="dash-empty-title">Nothing viewed yet</p>
+                <p class="dash-empty-sub">Recipes you view will appear here.</p>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function showDashSection(sectionId) {
+    // Update Content
+    document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('dash-section-' + sectionId).classList.add('active');
+    
+    // Update Navigation Cards
+    document.querySelectorAll('.dash-nav-card').forEach(c => c.classList.remove('active'));
+    const cards = document.querySelectorAll('.dash-nav-card');
+    if (sectionId === 'saved') cards[0].classList.add('active');
+    if (sectionId === 'viewed') cards[1].classList.add('active');
+}
+</script>
+{% endblock %}
