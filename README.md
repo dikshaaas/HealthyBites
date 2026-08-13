@@ -322,6 +322,16 @@ Access the admin panel at `/admin/dashboard` after logging in with an admin acco
 - ⚙️ **Site Settings** — Edit homepage hero content and theme colour scheme
 
 ---
+## Screenshots
+<img width="2846" height="1485" alt="image" src="https://github.com/user-attachments/assets/4d74bc0b-0bfd-41c9-b011-992257299db1" />
+<img width="2844" height="1104" alt="image" src="https://github.com/user-attachments/assets/c010e088-6992-402b-9512-f5d6a39c983c" />
+<img width="2106" height="1512" alt="image" src="https://github.com/user-attachments/assets/1ba5cdcd-1457-4d9c-bb87-73a2c294f0f4" />
+<img width="2222" height="1484" alt="image" src="https://github.com/user-attachments/assets/3ba5cf9f-32b3-4d45-9c8f-3e52d8975880" />
+<img width="2082" height="1524" alt="image" src="https://github.com/user-attachments/assets/d68f4c73-48c0-44aa-b361-d8115489b321" />
+<img width="2231" height="1516" alt="image" src="https://github.com/user-attachments/assets/8312992d-e404-42c1-90dd-1d44783cb522" />
+<img width="2836" height="1527" alt="image" src="https://github.com/user-attachments/assets/1381d02e-e09d-42f7-9731-698e76f30568" />
+<img width="2024" height="1500" alt="image" src="https://github.com/user-attachments/assets/a2f0dcf6-7094-4e02-81ef-4546d6850324" />
+
 
 ## Acknowledgements
 
